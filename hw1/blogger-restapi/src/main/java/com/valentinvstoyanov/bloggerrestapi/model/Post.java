@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -12,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Post {
     @Id
-    private String id;
+    private UUID id;
     private LocalDateTime publishedAt = LocalDateTime.now();
     @NonNull
     private String title;
