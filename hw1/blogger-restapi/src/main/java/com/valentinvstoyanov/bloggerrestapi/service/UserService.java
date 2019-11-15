@@ -9,9 +9,9 @@ import java.util.UUID;
 public interface UserService {
     Flux<User> findAll();
 
-    Mono<User> create(User article);
+    Mono<User> create(User user);
 
-    Mono<User> update(User article);
+    Mono<User> update(User user);
 
     Mono<User> delete(UUID userId);
 
