@@ -3,15 +3,13 @@ package com.valentinvstoyanov.bloggerrestapi.model;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
-import java.util.UUID;
-
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class User {
     @Id
-    private UUID id;
+    private String id;
     @NonNull
     private String firstName;
     @NonNull
@@ -20,8 +18,8 @@ public class User {
     private String email;
     @NonNull
     private String password;
-    @NonNull
-    private Role role;
+    /*@NonNull
+    private Role role;*/
     private String avatar;
 
     enum Role {ADMIN, BLOGGER}

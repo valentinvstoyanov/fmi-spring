@@ -1,14 +1,15 @@
 package com.valentinvstoyanov.bloggerrestapi.service.reactive_impl;
 
 import com.valentinvstoyanov.bloggerrestapi.dao.ReactiveUserRepository;
+import com.valentinvstoyanov.bloggerrestapi.exception.NonExistingEntityException;
 import com.valentinvstoyanov.bloggerrestapi.model.User;
 import com.valentinvstoyanov.bloggerrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
+@Service
 public class ReactiveUserService implements UserService {
     @Autowired
     private ReactiveUserRepository userRepository;
@@ -29,12 +30,15 @@ public class ReactiveUserService implements UserService {
     }
 
     @Override
-    public Mono<User> delete(UUID userId) {
-        return userRepository.findById(userId).flatMap(user -> userRepository.delete(user).thenReturn(user));
+    public Mono<User> delete(String userId) {
+        return userRepository
+                .findById(userId)
+                .flatMap(user -> userRepository.delete(user).thenReturn(user))
+                .switchIfEmpty(Mono.error(new NonExistingEntityException(String.format("Failed to delete user with id %s", userId))));
     }
 
     @Override
-    public Mono<User> findById(UUID userId) {
+    public Mono<User> findById(String userId) {
         return userRepository.findById(userId);
     }
 }

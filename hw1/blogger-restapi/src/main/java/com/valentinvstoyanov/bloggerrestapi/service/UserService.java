@@ -4,8 +4,6 @@ import com.valentinvstoyanov.bloggerrestapi.model.User;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 public interface UserService {
     Flux<User> findAll();
 
@@ -13,7 +11,7 @@ public interface UserService {
 
     Mono<User> update(User user);
 
-    Mono<User> delete(UUID userId);
+    Mono<User> delete(String userId);
 
-    Mono<User> findById(UUID userId);
+    Mono<User> findById(String userId);
 }
