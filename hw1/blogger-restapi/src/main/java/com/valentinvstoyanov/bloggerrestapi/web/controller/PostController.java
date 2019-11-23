@@ -1,4 +1,4 @@
-package com.valentinvstoyanov.bloggerrestapi.controller;
+package com.valentinvstoyanov.bloggerrestapi.web.controller;
 
 import com.valentinvstoyanov.bloggerrestapi.exception.IllegalEntityBodyException;
 import com.valentinvstoyanov.bloggerrestapi.model.Post;

@@ -1,6 +1,7 @@
 package com.valentinvstoyanov.bloggerrestapi.service.reactive_impl;
 
 import com.valentinvstoyanov.bloggerrestapi.dao.ReactivePostRepository;
+import com.valentinvstoyanov.bloggerrestapi.exception.NonExistingEntityException;
 import com.valentinvstoyanov.bloggerrestapi.model.Post;
 import com.valentinvstoyanov.bloggerrestapi.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +33,13 @@ public class ReactivePostService implements PostService {
     public Mono<Post> delete(String postId) {
         return postRepository
                 .findById(postId)
-                .flatMap(post -> postRepository.delete(post).thenReturn(post));
+                .flatMap(post -> postRepository.delete(post).thenReturn(post))
+                .switchIfEmpty(Mono.error(new NonExistingEntityException(String.format("Failed to delete post with id %s", postId))));
     }
 
     @Override
     public Mono<Post> findById(String postId) {
-        return postRepository.findById(postId);
+        return postRepository.findById(postId)
+                .switchIfEmpty(Mono.error(new NonExistingEntityException(String.format("Failed to find post with id %s", postId))));
     }
 }

@@ -39,6 +39,7 @@ public class ReactiveUserService implements UserService {
 
     @Override
     public Mono<User> findById(String userId) {
-        return userRepository.findById(userId);
+        return userRepository.findById(userId)
+                .switchIfEmpty(Mono.error(new NonExistingEntityException(String.format("Failed to find user with id %s", userId))));
     }
 }

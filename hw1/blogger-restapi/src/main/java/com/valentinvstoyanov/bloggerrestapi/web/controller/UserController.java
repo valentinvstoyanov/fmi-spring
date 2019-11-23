@@ -1,7 +1,6 @@
-package com.valentinvstoyanov.bloggerrestapi.controller;
+package com.valentinvstoyanov.bloggerrestapi.web.controller;
 
 import com.valentinvstoyanov.bloggerrestapi.exception.IllegalEntityBodyException;
-import com.valentinvstoyanov.bloggerrestapi.exception.NonExistingEntityException;
 import com.valentinvstoyanov.bloggerrestapi.model.User;
 import com.valentinvstoyanov.bloggerrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +27,14 @@ public class UserController {
     @PutMapping("/{id}")
     Mono<User> update(@PathVariable("id") String userId, @RequestBody User user) throws IllegalEntityBodyException {
         if (!userId.equals(user.getId())) {
-            throw new IllegalEntityBodyException(String.format("User body id: %s differs from path id %s", userId, user.getId()));
+            throw new IllegalEntityBodyException(String.format("User body id: %s differs from path id %s", user.getId(), userId));
         }
 
         return userService.update(user);
     }
 
     @DeleteMapping("/{id}")
-    Mono<User> delete(@PathVariable("id") String userId) throws NonExistingEntityException {
+    Mono<User> delete(@PathVariable("id") String userId) {
         return userService.delete(userId);
     }
 
