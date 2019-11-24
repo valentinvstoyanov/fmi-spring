@@ -4,7 +4,10 @@ import com.valentinvstoyanov.bloggerrestapi.exception.IllegalEntityBodyException
 import com.valentinvstoyanov.bloggerrestapi.model.User;
 import com.valentinvstoyanov.bloggerrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,8 +23,10 @@ public class UserController {
     }
 
     @PostMapping
-    Mono<User> create(@RequestBody User user) {
-        return userService.create(user);
+    @ResponseStatus(HttpStatus.CREATED)
+    Mono<ResponseEntity<User>> create(@RequestBody User user, UriComponentsBuilder uriComponentsBuilder) {
+        return userService.create(user)
+                .map(u -> ResponseEntity.created(uriComponentsBuilder.path("/api/users/{id}").buildAndExpand(u.getId()).toUri()).body(u));
     }
 
     @PutMapping("/{id}")

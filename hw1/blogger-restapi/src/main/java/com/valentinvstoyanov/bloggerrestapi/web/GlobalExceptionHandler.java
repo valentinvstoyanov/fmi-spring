@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler
-    public ResponseEntity<ApiError> handleExceptions(NonExistingEntityException ex) {
+    public ResponseEntity<ApiError> handleNonExistingEntityException(NonExistingEntityException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiError(HttpStatus.NOT_FOUND, ex.getMessage()));
     }
 
     @ExceptionHandler
-    public ResponseEntity<ApiError> handleExceptions(IllegalEntityBodyException ex) {
+    public ResponseEntity<ApiError> handleIllegalEntityBodyException(IllegalEntityBodyException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage()));
     }
 }
