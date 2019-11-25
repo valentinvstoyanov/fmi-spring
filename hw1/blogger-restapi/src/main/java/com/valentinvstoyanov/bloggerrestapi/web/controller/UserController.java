@@ -6,6 +6,7 @@ import com.valentinvstoyanov.bloggerrestapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
@@ -17,6 +18,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @GetMapping
     Flux<User> findAll() {
         return userService.findAll();
@@ -25,6 +29,7 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     Mono<ResponseEntity<User>> create(@RequestBody User user, UriComponentsBuilder uriComponentsBuilder) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userService.create(user)
                 .map(u -> ResponseEntity.created(uriComponentsBuilder.path("/api/users/{id}").buildAndExpand(u.getId()).toUri()).body(u));
     }
@@ -35,6 +40,7 @@ public class UserController {
             throw new IllegalEntityBodyException(String.format("User body id: %s differs from path id %s", user.getId(), userId));
         }
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userService.update(user);
     }
 

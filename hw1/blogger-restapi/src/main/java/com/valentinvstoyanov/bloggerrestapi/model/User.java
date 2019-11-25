@@ -18,9 +18,5 @@ public class User {
     private String email;
     @NonNull
     private String password;
-    /*@NonNull
-    private Role role;*/
     private String avatar;
-
-    enum Role {ADMIN, BLOGGER}
 }
